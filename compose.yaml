@@ -1,0 +1,200 @@
+version: "3.8"
+
+services:
+  user-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=user-db
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+      - ./bootstrap-user:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  tournament-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=tournament-db
+    volumes:
+      - tournament-db-data:/var/lib/postgresql/data
+      - ./bootstrap-tournament:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  auth-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=auth-db
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+      - ./bootstrap-auth:/docker-entrypoint-initdb.d
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  service-registry:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_SERVICE_REGISTRY_REPOSITORY}:dev
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: "curl -f http://localhost:8761/actuator/health || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  config-service:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_CONFIG_SERVICE_REPOSITORY}:latest
+    environment:
+      - AWS_CONFIG_BUCKET_NAME=${AWS_CONFIG_BUCKET_NAME}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    ports:
+      - "8888:8888"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api-gateway:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_API_GATEWAY_REPOSITORY}:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:8000
+      - USER_SERVICE_URL=http://user-service:8080
+      - TOURNAMENT_SERVICE_URL=http://tournament-service:8081
+
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_AUTH_SERVICE_REPOSITORY}:dev
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/auth-db
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+
+      - USER_SERVICE_URL=http://user-service:8080/api/users
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
+      - JWT_KEY_ID=${JWT_KEY_ID}
+    depends_on:
+      config-service:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      auth-db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  user-service:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_USER_SERVICE_REPOSITORY}:dev
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://user-db:5432/user-db
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+
+      - USER_SERVICE_URL=http://user-service:8080/api/users
+      - JWT_JWK_SET_URI=http://auth-service:8000/api/auth/.well-known/jwks.json
+    depends_on:
+      config-service:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      user-db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  tournament-service:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_TOURNAMENT_SERVICE_REPOSITORY}:dev
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://tournament-db:5432/tournament-db
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+
+      - USER_SERVICE_URL=http://user-service:8080/api/users
+      - JWT_JWK_SET_URI=http://auth-service:8000/api/auth/.well-known/jwks.json
+    depends_on:
+      config-service:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      tournament-db:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  user-db-data:
+  tournament-db-data:
+  auth-db-data:
+
+networks:
+  default:
+    name: smucode-network
