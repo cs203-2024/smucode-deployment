@@ -9,7 +9,7 @@ services:
       - POSTGRES_DB=user-db
     volumes:
       - user-db-data:/var/lib/postgresql/data
-      - ./bootstrap-user:/docker-entrypoint-initdb.d
+      - ./data/bootstrap-user:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     healthcheck:
@@ -26,7 +26,7 @@ services:
       - POSTGRES_DB=tournament-db
     volumes:
       - tournament-db-data:/var/lib/postgresql/data
-      - ./bootstrap-tournament:/docker-entrypoint-initdb.d
+      - ./data/bootstrap-user:/docker-entrypoint-initdb.d
     ports:
       - "5433:5432"
     healthcheck:
@@ -43,7 +43,7 @@ services:
       - POSTGRES_DB=auth-db
     volumes:
       - auth-db-data:/var/lib/postgresql/data
-      - ./bootstrap-auth:/docker-entrypoint-initdb.d
+      - ./data/bootstrap-user:/docker-entrypoint-initdb.d
     ports:
       - "5434:5432"
     healthcheck:
