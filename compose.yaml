@@ -4,6 +4,7 @@ services:
   user-db:
     image: postgres:latest
     environment:
+      - TZ=Asia/Singapore
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=user-db
@@ -21,6 +22,7 @@ services:
   tournament-db:
     image: postgres:latest
     environment:
+      - TZ=Asia/Singapore
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=tournament-db
@@ -38,6 +40,7 @@ services:
   auth-db:
     image: postgres:latest
     environment:
+      - TZ=Asia/Singapore
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=auth-db
@@ -55,6 +58,7 @@ services:
   service-registry:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_SERVICE_REGISTRY_REPOSITORY}:dev
     environment:
+      - TZ=Asia/Singapore
       - SPRING_PROFILES_ACTIVE=local
     ports:
       - "8761:8761"
@@ -67,6 +71,7 @@ services:
   config-service:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_CONFIG_SERVICE_REPOSITORY}:latest
     environment:
+      - TZ=Asia/Singapore
       - AWS_CONFIG_BUCKET_NAME=${AWS_CONFIG_BUCKET_NAME}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
@@ -87,6 +92,7 @@ services:
     ports:
       - "9000:9000"
     environment:
+      - TZ=Asia/Singapore
       - AUTH_SERVICE_URL=http://auth-service:8000
       - USER_SERVICE_URL=http://user-service:8080
       - TOURNAMENT_SERVICE_URL=http://tournament-service:8081
@@ -104,6 +110,7 @@ services:
   auth-service:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_AUTH_SERVICE_REPOSITORY}:dev
     environment:
+      - TZ=Asia/Singapore
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=${AWS_REGION}
@@ -137,6 +144,7 @@ services:
   user-service:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_USER_SERVICE_REPOSITORY}:dev
     environment:
+      - TZ=Asia/Singapore
       - SPRING_PROFILES_ACTIVE=local
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
@@ -165,6 +173,7 @@ services:
   tournament-service:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_TOURNAMENT_SERVICE_REPOSITORY}:dev
     environment:
+      - TZ=Asia/Singapore
       - SPRING_PROFILES_ACTIVE=local
       - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
