@@ -520,6 +520,15 @@ CREATE TRIGGER trigger_set_round_seq_id BEFORE INSERT ON public.rounds FOR EACH 
 
 
 --
+-- Name: tournament_participants tournament_participants_tournament_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tournament_participants
+    ADD CONSTRAINT unique_tournament_participant UNIQUE (tournament_id, participant),
+    ADD CONSTRAINT tournament_participants_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE;
+
+
+--
 -- Name: brackets brackets_round_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -535,15 +544,6 @@ ALTER TABLE ONLY public.brackets
 
 ALTER TABLE ONLY public.rounds
     ADD CONSTRAINT rounds_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE;
-
-
---
--- Name: tournament_participants tournament_participants_tournament_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tournament_participants
-    ADD CONSTRAINT unique_tournament_participant UNIQUE (tournament_id, participant),
-    ADD CONSTRAINT tournament_participants_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE;
 
 
 --
