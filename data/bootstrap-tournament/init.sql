@@ -523,8 +523,8 @@ CREATE TRIGGER trigger_set_round_seq_id BEFORE INSERT ON public.rounds FOR EACH 
 --
 
 ALTER TABLE ONLY public.brackets
-    ADD CONSTRAINT brackets_round_id_fkey FOREIGN KEY (round_id) REFERENCES public.rounds(id) ON DELETE CASCADE; \N
-    ADD CONSTRAINT brackets_player1_fkey FOREIGN KEY (player1) REFERENCES public.tournament_participants ON DELETE CASCADE; \N
+    ADD CONSTRAINT brackets_round_id_fkey FOREIGN KEY (round_id) REFERENCES public.rounds(id) ON DELETE CASCADE,
+    ADD CONSTRAINT brackets_player1_fkey FOREIGN KEY (player1) REFERENCES public.tournament_participants ON DELETE CASCADE,
     ADD CONSTRAINT brackets_player2_fkey FOREIGN KEY (player2) REFERENCES public.tournament_participants ON DELETE CASCADE;
 
 
