@@ -539,7 +539,7 @@ ALTER TABLE ONLY public.rounds
 --
 
 ALTER TABLE ONLY public.tournament_participants
-    ADD CONSTRAINT tournament_participants_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id);
+    ADD CONSTRAINT tournament_participants_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE;
 
 
 --
@@ -547,7 +547,7 @@ ALTER TABLE ONLY public.tournament_participants
 --
 
 ALTER TABLE ONLY public.tournament_signups
-    ADD CONSTRAINT tournament_signups_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id);
+    ADD CONSTRAINT tournament_signups_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE;
 
 
 --
