@@ -542,6 +542,7 @@ ALTER TABLE ONLY public.rounds
 --
 
 ALTER TABLE ONLY public.tournament_participants
+    ADD CONSTRAINT unique_tournament_participant UNIQUE (tournament_id, participant),
     ADD CONSTRAINT tournament_participants_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE;
 
 
