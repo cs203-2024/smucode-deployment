@@ -290,7 +290,7 @@ ALTER TABLE ONLY public.rounds ALTER COLUMN seq_id SET DEFAULT nextval('public.r
 --
 
 COPY public.brackets (id, tournament_id, round_id, status, winner, seq_id, player1, player1_score, player2, player2_score) FROM stdin;
-8fcbe01a-05e2-4c84-9123-ad3dbf9a9119    ecc30185-9cfe-441c-96d5-629b0c2bec27	797b83e7-85f4-473b-a7d5-abf227eb51bb	upcoming	\N	1	\N	0	\N	0
+8fcbe01a-05e2-4c84-9123-ad3dbf9a9119	ecc30185-9cfe-441c-96d5-629b0c2bec27	797b83e7-85f4-473b-a7d5-abf227eb51bb	upcoming	\N	1	\N	0	\N	0
 913762f4-fad0-4627-aa29-ad860bfade9a	960a05ea-7151-41b9-9d79-689bbd75c74d	824ebd4b-dbc1-4201-ba7f-c1957ea0032b	upcoming	\N	1	\N	0	\N	0
 20d7431d-fb96-4c59-aa17-099cecc57d73	09d82050-01d6-49fc-86bc-bfd84c3890df	58644b67-a6bc-466a-b9f0-03fea8aaa988	upcoming	\N	1	\N	0	\N	0
 \.
