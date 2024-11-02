@@ -145,6 +145,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.brackets (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    tournament_id uuid NOT NULL,
     round_id uuid NOT NULL,
     status character varying(255) DEFAULT 'upcoming'::public.status NOT NULL,
     winner character varying(255),
@@ -524,8 +525,8 @@ CREATE TRIGGER trigger_set_round_seq_id BEFORE INSERT ON public.rounds FOR EACH 
 
 ALTER TABLE ONLY public.brackets
     ADD CONSTRAINT brackets_round_id_fkey FOREIGN KEY (round_id) REFERENCES public.rounds(id) ON DELETE CASCADE,
-    ADD CONSTRAINT brackets_player1_fkey FOREIGN KEY (player1) REFERENCES public.tournament_participants ON DELETE CASCADE,
-    ADD CONSTRAINT brackets_player2_fkey FOREIGN KEY (player2) REFERENCES public.tournament_participants ON DELETE CASCADE;
+    ADD CONSTRAINT brackets_player1_fkey FOREIGN KEY (tournament_id, player1) REFERENCES public.tournament_participants(tournament_id, participant) ON DELETE CASCADE,
+    ADD CONSTRAINT brackets_player2_fkey FOREIGN KEY (tournament_id, player2) REFERENCES public.tournament_participants(tournament_id, participant) ON DELETE CASCADE;
 
 
 --
