@@ -534,7 +534,7 @@ ALTER TABLE ONLY public.tournament_participants
 
 ALTER TABLE ONLY public.brackets
     ADD CONSTRAINT brackets_tournamet_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE,
-    ADD CONSTRAINT brackets_round_id_fkey FOREIGN KEY (round_id) REFERENCES public.rounds(id) ON DELETE CASCADE,
+    ADD CONSTRAINT brackets_round_id_fkey FOREIGN KEY (round_id) REFERENCES public.rounds(id) ON DELETE CASCADE;
     -- ADD CONSTRAINT brackets_player1_fkey FOREIGN KEY (tournament_id, player1) REFERENCES public.tournament_participants(tournament_id, participant),
     -- ADD CONSTRAINT brackets_player2_fkey FOREIGN KEY (tournament_id, player2) REFERENCES public.tournament_participants(tournament_id, participant);
 
