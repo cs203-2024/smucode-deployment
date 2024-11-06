@@ -55,6 +55,24 @@ services:
       timeout: 5s
       retries: 5
 
+  notification-db:
+    image: postgres:latest
+    environment:
+      - TZ=Asia/Singapore
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=notification-db
+    volumes:
+      - notification-db-data:/var/lib/postgresql/data
+      # - ./data/bootstrap-notifications:/docker-entrypoint-initdb.d
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   service-registry:
     image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_SERVICE_REGISTRY_REPOSITORY}:dev
     environment:
@@ -203,6 +221,7 @@ volumes:
   user-db-data:
   tournament-db-data:
   auth-db-data:
+  notifcation-db-data:
 
 networks:
   default:
