@@ -145,6 +145,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.brackets (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    tournament_id uuid NOT NULL,
     round_id uuid NOT NULL,
     status character varying(255) DEFAULT 'upcoming'::public.status NOT NULL,
     winner character varying(255),
@@ -288,10 +289,10 @@ ALTER TABLE ONLY public.rounds ALTER COLUMN seq_id SET DEFAULT nextval('public.r
 -- Data for Name: brackets; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.brackets (id, round_id, status, winner, seq_id, player1, player1_score, player2, player2_score) FROM stdin;
-8fcbe01a-05e2-4c84-9123-ad3dbf9a9119	797b83e7-85f4-473b-a7d5-abf227eb51bb	upcoming	\N	1	\N	0	\N	0
-913762f4-fad0-4627-aa29-ad860bfade9a	824ebd4b-dbc1-4201-ba7f-c1957ea0032b	upcoming	\N	1	\N	0	\N	0
-20d7431d-fb96-4c59-aa17-099cecc57d73	58644b67-a6bc-466a-b9f0-03fea8aaa988	upcoming	\N	1	\N	0	\N	0
+COPY public.brackets (id, tournament_id, round_id, status, winner, seq_id, player1, player1_score, player2, player2_score) FROM stdin;
+8fcbe01a-05e2-4c84-9123-ad3dbf9a9119	ecc30185-9cfe-441c-96d5-629b0c2bec27	797b83e7-85f4-473b-a7d5-abf227eb51bb	upcoming	\N	1	\N	0	\N	0
+913762f4-fad0-4627-aa29-ad860bfade9a	960a05ea-7151-41b9-9d79-689bbd75c74d	824ebd4b-dbc1-4201-ba7f-c1957ea0032b	upcoming	\N	1	\N	0	\N	0
+20d7431d-fb96-4c59-aa17-099cecc57d73	09d82050-01d6-49fc-86bc-bfd84c3890df	58644b67-a6bc-466a-b9f0-03fea8aaa988	upcoming	\N	1	\N	0	\N	0
 \.
 
 
@@ -519,11 +520,23 @@ CREATE TRIGGER trigger_set_round_seq_id BEFORE INSERT ON public.rounds FOR EACH 
 
 
 --
+-- Name: tournament_participants tournament_participants_tournament_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tournament_participants
+    ADD CONSTRAINT unique_tournament_participant UNIQUE (tournament_id, participant),
+    ADD CONSTRAINT tournament_participants_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE;
+
+
+--
 -- Name: brackets brackets_round_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.brackets
+    ADD CONSTRAINT brackets_tournamet_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE,
     ADD CONSTRAINT brackets_round_id_fkey FOREIGN KEY (round_id) REFERENCES public.rounds(id) ON DELETE CASCADE;
+    -- ADD CONSTRAINT brackets_player1_fkey FOREIGN KEY (tournament_id, player1) REFERENCES public.tournament_participants(tournament_id, participant),
+    -- ADD CONSTRAINT brackets_player2_fkey FOREIGN KEY (tournament_id, player2) REFERENCES public.tournament_participants(tournament_id, participant);
 
 
 --
@@ -535,19 +548,11 @@ ALTER TABLE ONLY public.rounds
 
 
 --
--- Name: tournament_participants tournament_participants_tournament_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.tournament_participants
-    ADD CONSTRAINT tournament_participants_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id);
-
-
---
 -- Name: tournament_signups tournament_signups_tournament_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.tournament_signups
-    ADD CONSTRAINT tournament_signups_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id);
+    ADD CONSTRAINT tournament_signups_tournament_id_fkey FOREIGN KEY (tournament_id) REFERENCES public.tournaments(id) ON DELETE CASCADE;
 
 
 --
