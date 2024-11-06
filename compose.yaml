@@ -64,7 +64,7 @@ services:
       - POSTGRES_DB=notification-db
     volumes:
       - notification-db-data:/var/lib/postgresql/data
-      # - ./data/bootstrap-notifications:/docker-entrypoint-initdb.d
+      # - ./data/bootstrap-notification:/docker-entrypoint-initdb.d
     ports:
       - "5435:5432"
     healthcheck:
@@ -221,7 +221,7 @@ volumes:
   user-db-data:
   tournament-db-data:
   auth-db-data:
-  notifcation-db-data:
+  notification-db-data:
 
 networks:
   default:
