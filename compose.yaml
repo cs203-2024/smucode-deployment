@@ -114,6 +114,7 @@ services:
       - AUTH_SERVICE_URL=http://auth-service:8000
       - USER_SERVICE_URL=http://user-service:8080
       - TOURNAMENT_SERVICE_URL=http://tournament-service:8081
+      - NOTIFICATION_SERVICE_URL=http://notification-service:8082
 
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
     depends_on:
@@ -221,6 +222,33 @@ services:
       timeout: 5s
       retries: 5
 
+  notification-service:
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_NOTIFICATION_SERVICE_REPOSITORY}:dev
+    environment:
+      - TZ=Asia/Singapore
+      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_CLOUD_CONFIG_URI=http://config-service:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://notification-db:5432/notification-db
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+
+      - JWT_JWK_SET_URI=http://auth-service:8000/api/auth/.well-known/jwks.json
+    depends_on:
+      config-service:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      notification-db:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 volumes:
   user-db-data:
   tournament-db-data:
