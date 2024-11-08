@@ -27,7 +27,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.notification_recipients (
     notification_id uuid NOT NULL,
-    participant character varying(255)
+    recipient character varying(255)
 );
 
 
@@ -78,11 +78,11 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- Name: notification_recipients fkiuf5qgbttjq6ry57u1dni7qn4; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: notification_recipients notification_recipients_notification_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.notification_recipients
-    ADD CONSTRAINT fkiuf5qgbttjq6ry57u1dni7qn4 FOREIGN KEY (notification_id) REFERENCES public.notifications(id);
+    ADD CONSTRAINT notification_recipients_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES public.notifications(id);
 
 
 --
