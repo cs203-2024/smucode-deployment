@@ -57,7 +57,7 @@ ALTER TABLE public.notifications OWNER TO postgres;
 -- Data for Name: notification_recipients; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.notification_recipients (notification_id, participant) FROM stdin;
+COPY public.notification_recipients (notification_id, recipient) FROM stdin;
 \.
 
 
