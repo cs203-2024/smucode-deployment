@@ -143,6 +143,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
 
       - USER_SERVICE_URL=http://user-service:8080/api/users
+
+      - FEIGN_ACCESS_TOKEN=${FEIGN_ACCESS_TOKEN}
       - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
       - JWT_KEY_ID=${JWT_KEY_ID}
     depends_on:
@@ -206,6 +208,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
 
       - USER_SERVICE_URL=http://user-service:8080/api/users
+      - NOTIFICATION_SERVICE_URL=http://notification-service:8082/api/notifications
+      - FEIGN_ACCESS_TOKEN=${FEIGN_ACCESS_TOKEN}
       - JWT_JWK_SET_URI=http://auth-service:8000/api/auth/.well-known/jwks.json
     depends_on:
       config-service:
