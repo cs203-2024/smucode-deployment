@@ -293,6 +293,13 @@ COPY public.brackets (id, tournament_id, round_id, status, winner, seq_id, playe
 8fcbe01a-05e2-4c84-9123-ad3dbf9a9119	ecc30185-9cfe-441c-96d5-629b0c2bec27	797b83e7-85f4-473b-a7d5-abf227eb51bb	upcoming	\N	1	\N	0	\N	0
 913762f4-fad0-4627-aa29-ad860bfade9a	960a05ea-7151-41b9-9d79-689bbd75c74d	824ebd4b-dbc1-4201-ba7f-c1957ea0032b	upcoming	\N	1	\N	0	\N	0
 20d7431d-fb96-4c59-aa17-099cecc57d73	09d82050-01d6-49fc-86bc-bfd84c3890df	58644b67-a6bc-466a-b9f0-03fea8aaa988	upcoming	\N	1	\N	0	\N	0
+20d7431d-fb96-4c59-aa17-099cecc57d74	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	1	\N	0	\N	0
+20d7431d-fb96-4c59-aa17-099cecc57d75	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	2	\N	0	\N	0
+20d7431d-fb96-4c59-aa17-099cecc57d76	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	3	\N	0	\N	0
+20d7431d-fb96-4c59-aa17-099cecc57d77	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	4	\N	0	\N	0
+20d7431d-fb96-4c59-aa17-099cecc57d78	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa986	upcoming	\N	1	\N	0	\N	0
+20d7431d-fb96-4c59-aa17-099cecc57d79	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa986	upcoming	\N	2	\N	0	\N	0
+20d7431d-fb96-4c59-aa17-099cecc57d81	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa987	upcoming	\N	1	\N	0	\N	0
 \.
 
 
@@ -304,6 +311,9 @@ COPY public.rounds (id, tournament_id, name, start_date, end_date, status, seq_i
 797b83e7-85f4-473b-a7d5-abf227eb51bb	ecc30185-9cfe-441c-96d5-629b0c2bec27	Round of 2	\N	\N	upcoming	1
 824ebd4b-dbc1-4201-ba7f-c1957ea0032b	960a05ea-7151-41b9-9d79-689bbd75c74d	Round of 2	\N	\N	upcoming	1
 58644b67-a6bc-466a-b9f0-03fea8aaa988	09d82050-01d6-49fc-86bc-bfd84c3890df	Round of 2	\N	\N	upcoming	1
+58644b67-a6bc-466a-b9f0-03fea8aaa985	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	Round of 8	\N	\N	upcoming	1
+58644b67-a6bc-466a-b9f0-03fea8aaa986	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	Round of 4	\N	\N	upcoming	2
+58644b67-a6bc-466a-b9f0-03fea8aaa987	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	Round of 2	\N	\N	upcoming	3
 \.
 
 
@@ -440,6 +450,13 @@ ecc30185-9cfe-441c-96d5-629b0c2bec27	user10
 09d82050-01d6-49fc-86bc-bfd84c3890df	user8
 09d82050-01d6-49fc-86bc-bfd84c3890df	user9
 09d82050-01d6-49fc-86bc-bfd84c3890df	user10
+27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	user1
+27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	user2
+27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	user3
+27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	user4
+27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	user5
+27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	user6
+27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	user7
 \.
 DELETE FROM public.tournament_signups WHERE tournament_id
 in ('04c4d78b-541f-4cfd-ae26-e0c542661c4a',
@@ -459,7 +476,8 @@ INSERT INTO public.tournaments (id, name, description, start_date, end_date, for
 ('04c4d78b-541f-4cfd-ae26-e0c542661c4a', 'Lower Time 16p Battles!', 'Tournament with max 16 participants', now(), now() + interval '1 day', 'single-elimination', 16, NULL, 50, 25, 25, 'upcoming', now(), now() + interval '6 minutes', 'lower', 'admin', NULL),
 ('ecc30185-9cfe-441c-96d5-629b0c2bec27', 'Upper Time 2p Battles!', 'May the fastest win!', now(), now() + interval '1 day', 'single-elimination', 2, '', 100, 0, 0, 'upcoming', now(), now() + interval '6 minutes', 'upper', 'admin', NULL),
 ('960a05ea-7151-41b9-9d79-689bbd75c74d', 'Middle Time 2p Battles!', 'May the fastest win!', now(), now() + interval '1 day', 'single-elimination', 2, '', 100, 0, 0, 'upcoming', now(), now() + interval '6 minutes', 'middle', 'admin', NULL),
-('09d82050-01d6-49fc-86bc-bfd84c3890df', 'Lower Time 2p Battles!', 'May the fastest win!', now(), now() + interval '1 day', 'single-elimination', 2, '', 100, 0, 0, 'upcoming', now(), now() + interval '6 minutes', 'lower', 'admin', NULL);
+('09d82050-01d6-49fc-86bc-bfd84c3890df', 'Lower Time 2p Battles!', 'May the fastest win!', now(), now() + interval '1 day', 'single-elimination', 2, '', 100, 0, 0, 'upcoming', now(), now() + interval '6 minutes', 'lower', 'admin', NULL),
+('27db2b6d-c4b2-4882-8e52-8c2f381e1a3d', 'Demo Tournament', 'Demo', now(), now() + interval '1 day', 'single-elimination', 8, '', 65, 15, 20, 'upcoming', now() - interval '1 day', now(), 'middle', 'admin', NULL);
 
 DELETE FROM public.tournaments where id in
 ('04c4d78b-541f-4cfd-ae26-e0c542661c4a',
