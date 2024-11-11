@@ -293,7 +293,8 @@ COPY public.brackets (id, tournament_id, round_id, status, winner, seq_id, playe
 8fcbe01a-05e2-4c84-9123-ad3dbf9a9119	ecc30185-9cfe-441c-96d5-629b0c2bec27	797b83e7-85f4-473b-a7d5-abf227eb51bb	upcoming	\N	1	\N	0	\N	0
 913762f4-fad0-4627-aa29-ad860bfade9a	960a05ea-7151-41b9-9d79-689bbd75c74d	824ebd4b-dbc1-4201-ba7f-c1957ea0032b	upcoming	\N	1	\N	0	\N	0
 20d7431d-fb96-4c59-aa17-099cecc57d73	09d82050-01d6-49fc-86bc-bfd84c3890df	58644b67-a6bc-466a-b9f0-03fea8aaa988	upcoming	\N	1	\N	0	\N	0
-20d7431d-fb96-4c59-aa17-099cecc57d74	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	1	\N	0	\N	0 -- MOCK DATA
+-- MOCK DATA
+20d7431d-fb96-4c59-aa17-099cecc57d74	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	1	\N	0	\N	0
 20d7431d-fb96-4c59-aa17-099cecc57d75	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	2	\N	0	\N	0
 20d7431d-fb96-4c59-aa17-099cecc57d76	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	3	\N	0	\N	0
 20d7431d-fb96-4c59-aa17-099cecc57d77	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	58644b67-a6bc-466a-b9f0-03fea8aaa985	upcoming	\N	4	\N	0	\N	0
@@ -311,7 +312,8 @@ COPY public.rounds (id, tournament_id, name, start_date, end_date, status, seq_i
 797b83e7-85f4-473b-a7d5-abf227eb51bb	ecc30185-9cfe-441c-96d5-629b0c2bec27	Round of 2	\N	\N	upcoming	1
 824ebd4b-dbc1-4201-ba7f-c1957ea0032b	960a05ea-7151-41b9-9d79-689bbd75c74d	Round of 2	\N	\N	upcoming	1
 58644b67-a6bc-466a-b9f0-03fea8aaa988	09d82050-01d6-49fc-86bc-bfd84c3890df	Round of 2	\N	\N	upcoming	1
-58644b67-a6bc-466a-b9f0-03fea8aaa985	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	Round of 8	\N	\N	complete	1 -- MOCK DATA
+-- MOCK DATA
+58644b67-a6bc-466a-b9f0-03fea8aaa985	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	Round of 8	\N	\N	complete	1
 58644b67-a6bc-466a-b9f0-03fea8aaa986	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	Round of 4	\N	\N	complete	2
 58644b67-a6bc-466a-b9f0-03fea8aaa987	27db2b6d-c4b2-4882-8e52-8c2f381e1a3d	Round of 2	\N	\N	complete	3
 \.
@@ -450,7 +452,8 @@ ecc30185-9cfe-441c-96d5-629b0c2bec27	user10
 09d82050-01d6-49fc-86bc-bfd84c3890df	user8
 09d82050-01d6-49fc-86bc-bfd84c3890df	user9
 09d82050-01d6-49fc-86bc-bfd84c3890df	user10
-27db2b6d-c4b2-4882-8e52-8c2f381e1a3d    user1 -- MOCK DATA 
+-- MOCKDATA
+27db2b6d-c4b2-4882-8e52-8c2f381e1a3d    user1
 27db2b6d-c4b2-4882-8e52-8c2f381e1a3d    user2
 27db2b6d-c4b2-4882-8e52-8c2f381e1a3d    user3
 27db2b6d-c4b2-4882-8e52-8c2f381e1a3d    user4
