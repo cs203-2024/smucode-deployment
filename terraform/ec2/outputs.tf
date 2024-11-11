@@ -8,9 +8,9 @@ output "internal_services_sg_id" {
   value       = aws_security_group.internal_services_sg.id
 }
 
-output "alb_sg_ids" {
+output "alb_sg_id" {
   description = "IDs of ALB security groups"
-  value       = [aws_security_group.alb_sg.id]
+  value       = aws_security_group.alb_sg.id
 }
 
 output "vpc_endpoints_sg_id" {

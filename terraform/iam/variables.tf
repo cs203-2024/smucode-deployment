@@ -3,3 +3,9 @@ variable "config_bucket_name" {
   type        = string
   sensitive   = true
 }
+
+variable "aws_account_id" {
+  description = "ID of AWS account"
+  type        = string
+  sensitive   = true
+}

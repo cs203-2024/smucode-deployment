@@ -1,0 +1,57 @@
+[
+  {
+    "name": "${app_name}",
+    "image": "${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/smucode/${app_name}:prod",
+    "cpu": ${fargate_cpu},
+    "memory": ${fargate_memory},
+    "networkMode": "awsvpc",
+    "essential": true,
+
+    "environment": [
+      {"name": "TZ", "value": "Asia/Singapore"},
+      {"name": "EUREKA_CLIENT_SERVICEURL_DEFAULTZONE", "value": "http://service-registry.brawlcode.prod:8761/eureka/"},
+      {"name": "SPRING_CLOUD_CONFIG_URI", "value": "http://config-service.brawlcode.prod:8888"},
+      {"name": "AWS_CONFIG_BUCKET_NAME", "value": "${AWS_CONFIG_BUCKET_NAME}"},
+      {"name": "AWS_ACCESS_KEY_ID", "value": "${AWS_ACCESS_KEY}"},
+      {"name": "AWS_SECRET_ACCESS_KEY", "value": "${AWS_SECRET_ACCESS_KEY}"},
+      {"name": "JWT_PUBLIC_KEY", "value": "${JWT_PUBLIC_KEY}"},
+      {"name": "JWT_KEY_ID", "value": "${JWT_KEY_ID}"},
+      {"name": "AUTH_SERVICE_URL", "value": "http://auth-service.brawlcode.prod:8000/api/auth"},
+      {"name": "USER_SERVICE_URL", "value": "http://user-service.brawlcode.prod:8080/api/users"},
+      {"name": "TOURNAMENT_SERVICE_URL", "value":"http://tournament-service.brawlcode.prod:8081/api/tournaments"},
+      {"name": "NOTIFICATION_SERVICE_URL", "value":"http://notification-service.brawlcode.prod:8082/api/notifications"},
+      {"name": "JWT_JWK_SET_URI", "value":"http://auth-service.brawlcode.prod:8000/api/auth/.well-known/jwks.json"},
+      {"name": "FEIGN_ACCESS_TOKEN", "value":"${FEIGN_ACCESS_TOKEN}"}
+      %{ if database_config != null ~},
+      {"name": "SPRING_DATASOURCE_URL", "value": "jdbc:postgresql://${database_config.host}:${database_config.port}/${database_config.name}"},
+      {"name": "SPRING_DATASOURCE_USERNAME", "value": "${database_config.username}"},
+      {"name": "SPRING_DATASOURCE_PASSWORD", "value": "${database_config.password}"}
+      %{ endif ~}
+    ],
+
+    "healthCheck": {
+      "command": ["CMD-SHELL", "curl -f http://localhost:${app_port}/actuator/health || exit 1"],
+      "interval": 30,
+      "timeout": 5,
+      "retries": 3,
+      "startPeriod": 60
+    },
+
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${app_name}"
+      }
+    },
+
+    "portMappings": [
+      {
+        "containerPort": ${app_port},
+        "hostPort": ${app_port},
+        "protocol": "tcp"
+      }
+    ]
+  }
+]

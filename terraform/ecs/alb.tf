@@ -2,7 +2,7 @@ resource "aws_alb" "alb" {
   name               = "brawlcode-alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = var.alb_sg_ids
+  security_groups    = [var.alb_sg_id]
   subnets            = var.public_subnet_ids
 }
 
@@ -80,6 +80,6 @@ resource "aws_lb_listener_rule" "api_gateway" {
 }
 
 data "aws_acm_certificate" "cert" {
-  domain   = "brawlcode.com"
+  domain   = "*.brawlcode.com"
   statuses = ["ISSUED"]
 }
