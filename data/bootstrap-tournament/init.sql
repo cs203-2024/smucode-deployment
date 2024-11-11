@@ -476,7 +476,7 @@ INSERT INTO public.tournaments (id, name, description, start_date, end_date, for
 ('04c4d78b-541f-4cfd-ae26-e0c542661c4a', 'Lower Time 16p Battles!', 'Tournament with max 16 participants', now(), now() + interval '1 day', 'single-elimination', 16, NULL, 50, 25, 25, 'upcoming', now(), now() + interval '6 minutes', 'lower', 'admin', NULL),
 ('ecc30185-9cfe-441c-96d5-629b0c2bec27', 'Upper Time 2p Battles!', 'May the fastest win!', now(), now() + interval '1 day', 'single-elimination', 2, '', 100, 0, 0, 'upcoming', now(), now() + interval '6 minutes', 'upper', 'admin', NULL),
 ('960a05ea-7151-41b9-9d79-689bbd75c74d', 'Middle Time 2p Battles!', 'May the fastest win!', now(), now() + interval '1 day', 'single-elimination', 2, '', 100, 0, 0, 'upcoming', now(), now() + interval '6 minutes', 'middle', 'admin', NULL),
-('09d82050-01d6-49fc-86bc-bfd84c3890df', 'Lower Time 2p Battles!', 'May the fastest win!', now(), now() + interval '1 day', 'single-elimination', 2, '', 100, 0, 0, 'upcoming', now(), now() + interval '6 minutes', 'lower', 'admin', NULL);
+('09d82050-01d6-49fc-86bc-bfd84c3890df', 'Lower Time 2p Battles!', 'May the fastest win!', now(), now() + interval '1 day', 'single-elimination', 2, '', 100, 0, 0, 'upcoming', now(), now() + interval '6 minutes', 'lower', 'admin', NULL),
 ('27db2b6d-c4b2-4882-8e52-8c2f381e1a3d', 'Demo Tournament', 'Demo', now(), now() + interval '1 day', 'single-elimination', 8, '', 65, 15, 20, 'upcoming', now - interval '1 day', now(), 'middle', 'admin', NULL);
 
 DELETE FROM public.tournaments where id in
